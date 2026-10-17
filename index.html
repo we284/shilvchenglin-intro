@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>拾绿成林 · 项目简介</title>
+<style>
+  body{
+    font-family:"SimSun","宋体",serif;
+    font-size:16px; line-height:1.9; color:#000;
+    background:#fff; margin:0; padding:26px 16px 50px;
+  }
+  .wrap{max-width:720px; margin:0 auto;}
+  h1,h2,h3,th,.num{font-family:"SimHei","黑体","Microsoft YaHei","微软雅黑",sans-serif;}
+  h1{font-size:29px; text-align:center; font-weight:bold; margin:0 0 8px; letter-spacing:2px;}
+  .sub{text-align:center; font-size:16px; color:#333; margin:0 0 16px;}
+  .oneline{text-align:center; color:#222; margin:0 0 14px;}
+  .links{text-align:center; font-size:15px; margin:0 0 4px; color:#555;}
+  .links a{color:#0645ad;}
+  .links a:visited{color:#0b3d80;}
+  h2{font-size:19px; margin:34px 0 12px; font-weight:bold;}
+  h3{font-size:16px; margin:20px 0 6px; font-weight:bold;}
+  hr{border:0; border-top:1px solid #999; margin:28px 0;}
+  p{margin:11px 0;}
+  ul{padding-left:26px; margin:10px 0;}
+  li{margin:8px 0;}
+  table{border-collapse:collapse; width:100%; margin:12px 0; font-size:15px;}
+  th,td{border:1px solid #888; padding:7px 10px; text-align:left; vertical-align:top;}
+  th{font-weight:bold; background:#f2f2f2; white-space:nowrap;}
+  figure{margin:20px 0; text-align:center;}
+  figure img{width:100%; max-width:520px; border:1px solid #888;}
+  figcaption{font-size:13px; color:#555; margin-top:7px;}
+  .img-ph{border:1.5px dashed #999;border-radius:4px;height:230px;display:flex;align-items:center;justify-content:center;color:#888;font-size:13px;letter-spacing:1px;background:#fafafa}
+  .cap{font-size:13px; color:#555; text-align:center; margin:9px 0 0;}
+  .foot{text-align:center; color:#222; margin-top:38px;}
+  .foot .s{font-size:13px; color:#666;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>拾绿成林</h1>
+  <p class="sub">智能垃圾分类识别与低碳科普系统</p>
+  <p class="oneline">一个跑在手机浏览器里的垃圾分类科普应用，模型在本地推理，断网也能用，不依赖服务器。</p>
+  <p class="links"><a href="https://shilvchenglin.pages.dev" target="_blank" rel="noopener">https://shilvchenglin.pages.dev</a></p>
+  <p class="links"><a href="https://we284.github.io/silvchenglin-intro/user-manual.pdf" target="_blank" rel="noopener">用户手册（使用说明，PDF）</a></p>
+
+  <hr>
+
+  <h2>一、项目背景</h2>
+  <p>垃圾分类推行了很多年，学校里也一直在讲。可是真到扔的时候，人还是会站在桶前犹豫：手里这个奶茶杯，到底算哪一类。</p>
+  <p>问题通常不在态度。宣传材料讲的是四大类，桶身上印的也是四大类。可拿在手里的，永远是某一件具体的东西。四大类的概念记住了，不代表看见一件没见过的东西就能归进去。</p>
+  <p>市面上已有不少识别工具。多数要把照片传到服务器，有些人就不太愿意用。还有一部分得联网，而垃圾房、地下车库这种地方信号往往不好。</p>
+
+  <hr>
+
+  <h2>二、做法</h2>
+  <p>这些顾虑，本项目是从架构上解决的，不靠解释去打消。模型随网页下载到手机本地，识别在本机跑。照片不出设备，不上传、不留存，也就不存在泄露的问题；没有服务器，这个风险点本身就不存在。应用也不依赖网络，垃圾房、地下车库这类信号差的地方照样能用。</p>
+
+  <h3>四种使用方式</h3>
+  <ul>
+    <li><span class="num">拍照识别。</span>对准垃圾拍一张，给出物品类别和投放建议。画面里有几件，就分别识别几件。</li>
+    <li><span class="num">实时检测。</span>打开摄像头，画面里的垃圾被实时框出，逐个标注名称和该去的桶。</li>
+    <li><span class="num">分类练习。</span>把垃圾拖进对应的桶，攒下的积分能在种植园里种树，树随积分长大。</li>
+    <li><span class="num">图鉴。</span>收录 83 种常见垃圾，每认出一种收录一条，附上该类垃圾的说明和去向。</li>
+  </ul>
+
+  <h3>还有一件事：挑战赛</h3>
+  <p>系统随机点名一种垃圾，让人去现实里找到它、拍照、识别，认对了才算通过。这一条同时也是效果检验：练习里记住的分类，到了真实场景还认不认得出，看前后正确率的对比就知道。</p>
+  <p>应用面向学生群体。如果每次扔垃圾都要打开应用查一遍，它就只是个查询工具，关掉之后什么也留不下。所以做了练习、图鉴和挑战赛：让人在反复使用中把分类记牢，练到不用查也能分对。</p>
+
+  <hr>
+
+  <h2>三、技术方案</h2>
+  <p>识别分两步。先用 YOLOv8n 找出画面里有哪些物体、在什么位置，再把每个物体单独裁出来，交给 MobileNetV3-Small 做 200 类细分类。整图直接识别时，物体占的面积小，容易被背景带偏。先定位再识别，等于先把背景去掉。</p>
+  <p>工程上有三处花了比较多时间。</p>
+  <ul>
+    <li><span class="num">体积。</span>最终模型 6.9 MB，单张推理约 25 毫秒（CPU，ONNX Runtime Web），放在手机上可以接受。</li>
+    <li><span class="num">置信度。</span>训练时用了标签平滑，概率整体偏平，同样的 70 % 在不同模型上并不是一回事。改用温度缩放做校准，在 1,882 张验证集上重新拟合温度（T=0.75），校准误差从 0.144 降到 0.024。</li>
+    <li><span class="num">下载。</span>国内网络下单个源常常中断或者限速，改成多源轮换加断点续传，每个文件都做字节校验，弱网下也能完整加载。</li>
+  </ul>
+
+  <hr>
+
+  <h2>四、界面截图</h2>
+  <figure>
+    <img src="img/paizhao-yinliaoping.png" alt="拍照识别：饮料瓶">
+    <figcaption>图 1　拍照识别。拍到一件饮料瓶，给出类别、识别置信度与投放建议</figcaption>
+  </figure>
+  <figure>
+    <img src="img/shijianshi-penwanpen.jpg" alt="实时检测：塑料碗盆">
+    <figcaption>图 2　实时检测。画面中的物体被实时框出，标注名称与应去的桶</figcaption>
+  </figure>
+  <p class="cap">图 1 为应用内截图，图 2 为手机真机实时识别实拍；均为真实识别结果，未作美化处理</p>
+
+  <hr>
+
+  <h2>五、项目信息</h2>
+  <table>
+    <tr><th>项目名称</th><td>拾绿成林 · 智能垃圾分类识别与低碳科普系统</td></tr>
+    <tr><th>技术栈</th><td>原生 HTML / CSS / JavaScript + ONNX Runtime Web</td></tr>
+    <tr><th>核心模型</th><td>MobileNetV3-Small（分类，200 类）/ YOLOv8n（检测），浏览器本地推理</td></tr>
+    <tr><th>数据来源</th><td>训练数据来自 HuggingFace 公开数据集 fritz1024/garbage-classify-with-chinese（中文垃圾分类图片集，限非商业科研/教学用途），按类别均衡抽取 200 类共 19,566 张（训练 17,684 + 验证 1,882，验证集不参与训练，模型准确率即在它上面测得）。分类网络为 torchvision ImageNet 预训练的 MobileNetV3-Small，检测网络为官方 COCO 预训练的 YOLOv8n（未在垃圾数据上微调）</td></tr>
+    <tr><th>模型准确率</th><td>一级四类准确率 88.5 %；细类 top-1 准确率 66.4 %（1,882 张验证集，含新增的 20 类）</td></tr>
+  </table>
+
+  <hr>
+
+  <div class="foot">
+    <p>参赛团队：江锦程 等 ｜ 计信学院 软件工程</p>
+    <p class="s">拾绿成林 · 项目简介 ｜ 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
